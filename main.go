@@ -23,7 +23,6 @@ func init() {
 
 func setup_logging(conf *config) {
 
-	//var filename string = "access.log"
 	f, err := os.OpenFile(conf.Logfile, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 	Formatter := new(log.TextFormatter)
 	Formatter.TimestampFormat = "02-01-2006 15:04:05"
@@ -51,8 +50,7 @@ func main() {
 	if *verbose {
 		conf.Verbose = true
 	}
-	
-	setup_logging(conf) 
+	setup_logging(conf)
 	fmt.Printf("Connecting to %s...\n", conf.Backend)
 	_, err = http.Get(conf.Backend)
 	if err != nil {
@@ -78,9 +76,11 @@ func main() {
 		}).Info("Req")
 		if req.URL.Path == "/"+open_path+"/" {
 			open_sesame = true
+			fmt.Printf("Called Open sesame path\n")
 		}
 		if req.URL.Path == "/"+close_path+"/" {
 			open_sesame = false
+			fmt.Printf("Called close sesame path \n")
 		}
 	}
 
@@ -96,7 +96,7 @@ func main() {
 				"Method": r.Method,
 				"URL":    r.URL.Path,
 			}).Warn("Security")
-			//w.WriteHeader(401)
+			w.WriteHeader(401)
 		} else if strings.Contains(r.URL.Path, conf.Path) && !open_sesame {
 			fmt.Println("closed!")
 			log.WithFields(log.Fields{
