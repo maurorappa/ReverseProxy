@@ -2,11 +2,10 @@ package main
 
 import (
 	"math/rand"
-	"strings"
 )
 
 var (
-	letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-!.=$@:1234567890")
+	letters = []rune("abcdefghijklmnopqrstuvwxyz_-!.=$@:1234567890")
 )
 
 func inArray(str string, list []string) bool {
@@ -23,5 +22,5 @@ func randSeq(n int) string {
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
-	return strings.ToLower(string(b))
+	return string(b)
 }
