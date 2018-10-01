@@ -15,6 +15,7 @@ import (
 
 var (
 	open_sesame bool = false
+	auth_ip string = ""
 )
 
 func init() {
@@ -64,8 +65,6 @@ func main() {
 	fmt.Printf("Close sesame path will be: %s\n", close_path)
 
 	director := func(req *http.Request) {
-		//req.Header.Add("X-Forwarded-Host", req.Host)
-		//req.Header.Add("X-Origin-Host", origin.Host)
 		req.URL.Scheme = "http"
 		req.URL.Host = origin.Host
 
@@ -76,10 +75,13 @@ func main() {
 		}).Info("Req")
 		if req.URL.Path == "/"+open_path+"/" {
 			open_sesame = true
+			auth_ip = strings.Split(req.RemoteAddr,":")[0]
+			fmt.Printf("Auth IP: %s\n", auth_ip )
 			fmt.Printf("Called Open sesame path\n")
 		}
 		if req.URL.Path == "/"+close_path+"/" {
 			open_sesame = false
+			auth_ip = ""
 			fmt.Printf("Called close sesame path \n")
 		}
 	}
@@ -97,7 +99,7 @@ func main() {
 				"URL":    r.URL.Path,
 			}).Warn("Security")
 			w.WriteHeader(401)
-		} else if strings.Contains(r.URL.Path, conf.Path) && !open_sesame {
+		} else if strings.Contains(r.URL.Path, conf.Path) && ( !open_sesame || strings.Split(r.RemoteAddr,":")[0] != auth_ip ) {
 			fmt.Println("closed!")
 			log.WithFields(log.Fields{
 				"IP":     r.RemoteAddr,
