@@ -91,6 +91,19 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		url_len := len(r.URL.Path)
+		if url_len > 4 {
+			extension := r.URL.Path[url_len-4:url_len-1]
+			//fmt.Printf("%s\n",string(extension))
+			if inArray(extension,conf.Forbidden_extensions ) {
+				w.WriteHeader(302)
+				log.WithFields(log.Fields{
+					"IP":     r.RemoteAddr,
+					"URL":    r.URL.Path,
+				}).Warn("Security")
+				return
+			}
+		}
 		//fmt.Printf("%v\n",open_sesame)
 		if inArray(r.Method, conf.Forbidden_methods) {
 			log.WithFields(log.Fields{
@@ -99,6 +112,7 @@ func main() {
 				"URL":    r.URL.Path,
 			}).Warn("Security")
 			w.WriteHeader(401)
+			return
 		} else if strings.Contains(r.URL.Path, conf.Path) && ( !open_sesame || strings.Split(r.RemoteAddr,":")[0] != auth_ip ) {
 			fmt.Println("closed!")
 			log.WithFields(log.Fields{
@@ -107,6 +121,7 @@ func main() {
 				"URL":    r.URL.Path,
 			}).Warn("Admin")
 			w.WriteHeader(404)
+			return
 		} else {
 			proxy.ServeHTTP(w, r)
 		}

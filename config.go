@@ -14,6 +14,7 @@ type config struct {
 	Path_len          int      `toml:"path_len"`
 	Verbose           bool     `toml:"verbose"`
 	Forbidden_methods []string `toml:"forbidden_methods"`
+	Forbidden_extensions []string `toml:"forbidden_extensions"`
 	Max_rate int `toml:"max_rate"`
 }
 
@@ -49,6 +50,10 @@ func loadConfig(path string) (*config, error) {
 
 	if len(conf.Forbidden_methods) == 0 {
 		conf.Forbidden_methods = []string{}
+	}
+
+	if len(conf.Forbidden_extensions) == 0 {
+		conf.Forbidden_extensions = []string{}
 	}
 
 	return conf, nil
