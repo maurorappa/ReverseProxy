@@ -15,7 +15,11 @@ type config struct {
 	Verbose           bool     `toml:"verbose"`
 	Forbidden_methods []string `toml:"forbidden_methods"`
 	Forbidden_extensions []string `toml:"forbidden_extensions"`
-	Max_rate int `toml:"max_rate"`
+	Max_rate 	  int `toml:"max_rate"`
+	Smtp_server	  string   `toml:"smtp"`
+	Mailbox		  string   `toml:"mailbox"`	
+	Auth_user	  string   `toml:"auth_user"`
+	Auth_pwd	  string   `toml:"auth_pwd"`
 }
 
 func loadConfig(path string) (*config, error) {

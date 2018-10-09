@@ -59,10 +59,12 @@ func main() {
 		os.Exit(3)
 	}
 	origin, _ := url.Parse(conf.Backend)
-	open_path := randSeq(conf.Path_len)
-	close_path := randSeq(conf.Path_len)
-	fmt.Printf("Open sesame path will be: %s\n", open_path)
-	fmt.Printf("Close sesame path will be: %s\n", close_path)
+	open_path := "Open sesame path will be: " + randSeq(conf.Path_len)
+	fmt.Printf("%s\n", open_path)
+	send_email(conf,open_path)
+	close_path := "Close sesame path will be: " + randSeq(conf.Path_len)
+	fmt.Printf("%s\n", close_path)
+	send_email(conf,close_path)
 
 	director := func(req *http.Request) {
 		req.URL.Scheme = "http"
