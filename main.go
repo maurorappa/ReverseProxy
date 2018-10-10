@@ -59,10 +59,12 @@ func main() {
 		os.Exit(3)
 	}
 	origin, _ := url.Parse(conf.Backend)
-	open_path := "Open sesame path will be: " + randSeq(conf.Path_len)
+	open_code :=  randSeq(conf.Path_len)
+	open_path := "Open sesame path will be: " + open_code
 	fmt.Printf("%s\n", open_path)
 	send_email(conf,open_path)
-	close_path := "Close sesame path will be: " + randSeq(conf.Path_len)
+	close_code := randSeq(conf.Path_len)
+	close_path := "Close sesame path will be: " + close_code
 	fmt.Printf("%s\n", close_path)
 	send_email(conf,close_path)
 
@@ -75,13 +77,13 @@ func main() {
 			"Method": req.Method,
 			"URL":    req.URL.Path,
 		}).Info("Req")
-		if req.URL.Path == "/"+open_path+"/" {
+		if req.URL.Path == "/"+open_code+"/" {
 			open_sesame = true
 			auth_ip = strings.Split(req.RemoteAddr,":")[0]
 			fmt.Printf("Auth IP: %s\n", auth_ip )
 			fmt.Printf("Called Open sesame path\n")
 		}
-		if req.URL.Path == "/"+close_path+"/" {
+		if req.URL.Path == "/"+close_code+"/" {
 			open_sesame = false
 			auth_ip = ""
 			fmt.Printf("Called close sesame path \n")
@@ -95,8 +97,7 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		url_len := len(r.URL.Path)
 		if url_len > 4 {
-			extension := r.URL.Path[url_len-4:url_len-1]
-			//fmt.Printf("%s\n",string(extension))
+			extension := r.URL.Path[url_len-3:]
 			if inArray(extension,conf.Forbidden_extensions ) {
 				w.WriteHeader(302)
 				log.WithFields(log.Fields{
@@ -106,7 +107,7 @@ func main() {
 				return
 			}
 		}
-		//fmt.Printf("%v\n",open_sesame)
+		//fmt.Printf("%v\n",open_code)
 		if inArray(r.Method, conf.Forbidden_methods) {
 			log.WithFields(log.Fields{
 				"IP":     r.RemoteAddr,
