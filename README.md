@@ -9,12 +9,12 @@ It also logs all HTTP requests for trafic analysis.
  
 This software si desigend to be placed in front of a blog engine to log all accesses and secure the management part of it.
 When the proxy starts it blocks by default the specified path (ie/admin) but it allows access if a specific url is requested,
-its string is randomly generated at the startup and shown in the standard output.
+its string is randomly generated at the startup,shown in the standard output and conveniently sent to your mailbox!
 in the config file you can specify the lenght of this random string to make it less likely to be guessed,
 the charset used includes letters, numbers and some special caracters.
 The IP of this request is saved and every request to the restriced area will be restricted just to this IP.
 After having finished the management work, you can block again the access to this path by calling another random generated URL.
-The next implementation will make them valid for one time and create a new one, the problem is the communication channel to send the new strings, now it's standard output but it's not suitable for dynamic values.
+The next implementation will make them valid for one time and create a new one
 
 This is the output during startup:
 
