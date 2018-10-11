@@ -35,7 +35,7 @@ func send_email(conf *config,code string) {
 	from := mail.Address{"", conf.Mailbox}
 	to := mail.Address{"", conf.Mailbox}
 	subj := "Reverse Proxy Urlknocking codes"
-	body := "This is an important code to protect / adminiter your blog.\n" + code + "\n\n"
+	body := "This is an important code to protect your blog.\n" + code + "\n\n"
 
 	// Setup headers
 	headers := make(map[string]string)
