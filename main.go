@@ -103,7 +103,7 @@ func main() {
 				log.WithFields(log.Fields{
 					"IP":     r.RemoteAddr,
 					"URL":    r.URL.Path,
-				}).Warn("Security")
+				}).Warn("Blocked")
 				return
 			}
 		}
