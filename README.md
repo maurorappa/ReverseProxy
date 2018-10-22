@@ -1,13 +1,13 @@
 # ReverseProxy
 
  
-This is simple HTTP reverse proxy with some advanced features tipical of a WAF (web application firewall) like rate limiting, URL/Method firewall and urlknocking
-(a secret URL which allows access to a specific path, like the admin zone).
-It also logs all HTTP requests for trafic analysis.
+This is simple HTTP reverse proxy with some advanced features tipical of a WAF (web application firewall) like rate limiting, URL/Method firewall and urlknocking. It also logs all HTTP requests for trafic analysis.
+The most interesting features are:
 
-* What is Urlknocking? 
+* Urlknocking (what?) 
  
-This software si desigend to be placed in front of a blog engine to log all accesses and secure the management part of it.
+It is an implementation in HTTP of a concept called PortKnocking (https://en.wikipedia.org/wiki/Port_knocking).  
+This software is desigend to be placed in front of a blog engine to log all accesses and secure the management part of it.
 When the proxy starts it blocks by default the specified path (ie/admin) but it allows access if a specific url is requested,
 its string is randomly generated at the startup,shown in the standard output and conveniently sent to your mailbox!
 in the config file you can specify the lenght of this random string to make it less likely to be guessed,
@@ -29,7 +29,7 @@ Listening to 0.0.0.0:80
 
 * Block undesired file extensions
 
-My blog does not contains a single page written in PHP, but all web worms scans for wordpress resources which happens to be php pages. With some clever filtering, this proxy block those requests and redirect somewhere else, this is to avoid to clutter the access log and make the backend waste resources.
+My blog does not contains a single page written in PHP, but all web worms scan for Wordpress resources which happens to be php pages. With some clever filtering, this proxy block those requests and redirect somewhere else, this is to avoid to clutter the access log and make the backend waste resources.
 
 * Rate limiting
 
