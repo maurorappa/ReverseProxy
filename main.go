@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
+	_ "net/http/pprof"
 	"math/rand"
 	"net/http"
 	"net/http/httputil"
