@@ -65,39 +65,46 @@ func send_email(conf *config,code string) {
 
 	c, err := smtp.Dial(servername)
 	if err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf(" %s \n", err)
+		return
 	}
 
 	c.StartTLS(tlsconfig)
 
 	// Auth
 	if err = c.Auth(auth); err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf("%s \n", err)
+		return
 	}
 
 	// To && From
 	if err = c.Mail(from.Address); err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf("%s \n", err)
+		return
 	}
 
 	if err = c.Rcpt(to.Address); err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf("%s \n", err)
+		return
 	}
 
 	// Data
 	w, err := c.Data()
 	if err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf("%s \n", err)
+		return
 	}
 
 	_, err = w.Write([]byte(message))
 	if err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf("%s \n", err)
+		return
 	}
 
 	err = w.Close()
 	if err != nil {
-		fmt.Printf("%s /n", err)
+		fmt.Printf("%s \n", err)
+		return
 	}
 
 	c.Quit()
