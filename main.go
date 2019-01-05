@@ -10,6 +10,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -109,6 +110,7 @@ func main() {
 			}
 		}
 		//fmt.Printf("%v\n",open_code)
+		re := regexp.MustCompile(conf.Path)
 		if inArray(r.Method, conf.Forbidden_methods) {
 			log.WithFields(log.Fields{
 				"IP":     r.RemoteAddr,
@@ -117,7 +119,7 @@ func main() {
 			}).Warn("Security")
 			w.WriteHeader(401)
 			return
-		} else if strings.Contains(r.URL.Path, conf.Path) && ( !open_sesame || strings.Split(r.RemoteAddr,":")[0] != auth_ip ) {
+		} else if re.MatchString(r.URL.Path) && ( !open_sesame || strings.Split(r.RemoteAddr,":")[0] != auth_ip ) {
 			fmt.Println("closed!")
 			log.WithFields(log.Fields{
 				"IP":     r.RemoteAddr,
