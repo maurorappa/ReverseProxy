@@ -1,4 +1,4 @@
-FROM quay.io/prometheus/busybox:latest
+FROM busybox
 RUN mkdir -p /srv/log /srv/config
 COPY ReverseProxy /srv/ReverseProxy
 EXPOSE     80
